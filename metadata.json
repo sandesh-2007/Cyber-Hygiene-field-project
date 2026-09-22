@@ -1,0 +1,6 @@
+{
+  "name": "Cyber Hygiene Practices Research",
+  "description": "An academic research study on cyber hygiene practices, security awareness, and habits among college students and faculty.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
