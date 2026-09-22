@@ -2,10 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { motion, useMotionValue, useSpring } from 'motion/react';
 
 export const CustomCursor: React.FC = () => {
+  const [isTouchDevice] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    return window.matchMedia('(hover: none) and (pointer: coarse)').matches || 'ontouchstart' in window;
+  });
+
   const [isVisible, setIsVisible] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
-  const [isTouchDevice, setIsTouchDevice] = useState(false);
 
   // Raw mouse coordinates
   const mouseX = useMotionValue(-100);
@@ -17,11 +21,7 @@ export const CustomCursor: React.FC = () => {
   const glowY = useSpring(mouseY, glowSpringConfig);
 
   useEffect(() => {
-    // Detect touch-only devices to avoid showing custom cursor on mobile
-    if (window.matchMedia('(hover: none) and (pointer: coarse)').matches || 'ontouchstart' in window) {
-      setIsTouchDevice(true);
-      return;
-    }
+    if (isTouchDevice) return;
 
     const handleMouseMove = (e: MouseEvent) => {
       mouseX.set(e.clientX);
