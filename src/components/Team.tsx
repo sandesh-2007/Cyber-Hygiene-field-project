@@ -6,16 +6,18 @@ import {
   BookOpen, 
   Code, 
   MapPin, 
-  GraduationCap 
+  GraduationCap,
+  BarChart3
 } from 'lucide-react';
 import { INITIAL_TEAM, TeamMember } from '../data/projectData';
 
 const getRoleIcon = (role: string) => {
+  if (role.includes("FACULTY")) return GraduationCap;
   if (role.includes("PROJECT LEAD")) return Shield;
   if (role.includes("RESEARCH")) return BookOpen;
   if (role.includes("DEVELOPMENT")) return Code;
   if (role.includes("FIELD")) return MapPin;
-  if (role.includes("FACULTY")) return GraduationCap;
+  if (role.includes("SURVEY") || role.includes("ANALYSIS") || role.includes("DATA")) return BarChart3;
   return Users;
 };
 
@@ -51,7 +53,7 @@ export const Team: React.FC = () => {
             </h2>
 
             <p className="mt-4 text-base sm:text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed font-normal">
-              Collegiate project team responsible for questionnaire construction, field data gathering, 
+              Collegiate project team responsible for academic supervision, questionnaire construction, field data gathering, 
               statistical synthesis, web platform development, and institutional reporting.
             </p>
           </div>
@@ -61,7 +63,7 @@ export const Team: React.FC = () => {
           </div>
         </div>
 
-        {/* Team Members Grid (5 Dedicated Members) */}
+        {/* Team Members Grid (6 Dedicated Members) */}
         <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {teamMembers.map((member) => {
             const isFaculty = member.role.includes("FACULTY GUIDE");
@@ -72,7 +74,7 @@ export const Team: React.FC = () => {
                 key={member.id}
                 className={`p-6 sm:p-7 bg-white dark:bg-neutral-950 border transition-all flex flex-col justify-between group relative overflow-hidden shadow-xs hover:border-red-600 ${
                   isFaculty 
-                    ? 'border-red-600/60 dark:border-red-600/70 md:col-span-2 lg:col-span-1' 
+                    ? 'border-red-600/70 dark:border-red-600/80 bg-red-50/20 dark:bg-red-950/20' 
                     : 'border-neutral-300 dark:border-neutral-800'
                 }`}
               >

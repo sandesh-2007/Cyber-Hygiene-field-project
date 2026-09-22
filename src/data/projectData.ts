@@ -540,6 +540,14 @@ export const INITIAL_REFERENCES: ReferenceItem[] = [
 export const INITIAL_TEAM: TeamMember[] = [
   {
     id: "TM01",
+    role: "FACULTY GUIDE",
+    name: "Prof. Upasana Mishra",
+    department: "Faculty of Information Technology",
+    college: "Thakur Shyamnarayan Degree College",
+    email: "faculty.guide@college.edu"
+  },
+  {
+    id: "TM02",
     role: "PROJECT LEAD",
     name: "Yash Tiwari",
     department: "Department of Information Technology",
@@ -547,7 +555,7 @@ export const INITIAL_TEAM: TeamMember[] = [
     email: "yashtiwari9320@gmail.com"
   },
   {
-    id: "TM02",
+    id: "TM03",
     role: "RESEARCH & DOCUMENTATION",
     name: "Nigel Bijamo",
     department: "Department of Information Technology",
@@ -572,11 +580,11 @@ export const INITIAL_TEAM: TeamMember[] = [
   },
   {
     id: "TM06",
-    role: "FACULTY GUIDE",
-    name: "Prof. Upasana Mishra",
+    role: "SURVEY & DATA ANALYSIS",
+    name: "Sarvesh Bhosale",
     department: "Faculty of Information Technology",
     college: "Thakur Shyamnarayan Degree College",
-    email: "faculty.guide@college.edu"
+    email: "bhosalesarvesh18@gmail.com"
   }
 ];
 
