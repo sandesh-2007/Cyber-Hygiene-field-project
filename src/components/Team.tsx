@@ -1,12 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { 
   Users, 
-  Pencil, 
-  Check, 
   Mail, 
   Shield, 
   BookOpen, 
-  BarChart3, 
   Code, 
   MapPin, 
   GraduationCap 
@@ -16,7 +13,6 @@ import { INITIAL_TEAM, TeamMember } from '../data/projectData';
 const getRoleIcon = (role: string) => {
   if (role.includes("PROJECT LEAD")) return Shield;
   if (role.includes("RESEARCH")) return BookOpen;
-  if (role.includes("SURVEY") || role.includes("ANALYSIS")) return BarChart3;
   if (role.includes("DEVELOPMENT")) return Code;
   if (role.includes("FIELD")) return MapPin;
   if (role.includes("FACULTY")) return GraduationCap;
@@ -24,202 +20,103 @@ const getRoleIcon = (role: string) => {
 };
 
 export const Team: React.FC = () => {
-  const [team, setTeam] = useState<TeamMember[]>(() => {
-    const saved = localStorage.getItem('cyber_hygiene_team');
-    if (saved) {
-      try {
-        return JSON.parse(saved);
-      } catch (e) {
-        console.error('Failed to parse team', e);
-      }
+  // Clear any legacy local storage data that may contain obsolete placeholder cards
+  useEffect(() => {
+    try {
+      localStorage.removeItem('cyber_hygiene_team');
+    } catch {
+      // Ignore if localStorage unavailable
     }
-    return INITIAL_TEAM;
-  });
+  }, []);
 
-  const [editingId, setEditingId] = useState<string | null>(null);
-  const [editForm, setEditForm] = useState<TeamMember | null>(null);
-
-  const saveToLocal = (members: TeamMember[]) => {
-    setTeam(members);
-    localStorage.setItem('cyber_hygiene_team', JSON.stringify(members));
-  };
-
-  const handleStartEdit = (member: TeamMember) => {
-    setEditingId(member.id);
-    setEditForm({ ...member });
-  };
-
-  const handleSave = () => {
-    if (!editForm) return;
-    const updated = team.map(m => m.id === editForm.id ? editForm : m);
-    saveToLocal(updated);
-    setEditingId(null);
-    setEditForm(null);
-  };
-
-  const handleCancel = () => {
-    setEditingId(null);
-    setEditForm(null);
-  };
+  const teamMembers: TeamMember[] = INITIAL_TEAM;
 
   return (
-    <section id="team" className="py-24 bg-white border-t border-neutral-200 text-neutral-900 relative">
+    <section 
+      id="team" 
+      className="py-24 bg-white dark:bg-neutral-950 border-t border-neutral-200 dark:border-neutral-800 text-neutral-900 dark:text-neutral-100 relative transition-colors"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-[5px] text-xs font-mono font-semibold uppercase tracking-wider text-red-700 bg-red-50 border border-red-200">
+            <div className="inline-flex items-center gap-2 px-3 py-1 text-xs font-mono font-bold uppercase tracking-wider text-red-700 dark:text-red-400 bg-red-50 dark:bg-red-950/50 border border-red-200 dark:border-red-900">
               <Users className="w-3.5 h-3.5 text-red-600" />
               <span>Project Investigators</span>
             </div>
 
-            <h2 className="mt-4 text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-neutral-950">
+            <h2 className="mt-4 text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-neutral-950 dark:text-white">
               Research & Field Team
             </h2>
 
-            <p className="mt-4 text-base sm:text-lg text-neutral-600 leading-relaxed font-normal">
+            <p className="mt-4 text-base sm:text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed font-normal">
               Collegiate project team responsible for questionnaire construction, field data gathering, 
-              statistical synthesis, and institutional reporting.
+              statistical synthesis, web platform development, and institutional reporting.
             </p>
           </div>
 
-          <div className="text-xs font-mono text-neutral-500">
-            Click any member card to edit names for submission
+          <div className="text-xs font-mono text-neutral-500 dark:text-neutral-400 border border-neutral-200 dark:border-neutral-800 px-3 py-1.5 self-start md:self-auto">
+            Thakur Shyamnarayan Degree College
           </div>
         </div>
 
-        {/* 6 Team Roles Grid */}
+        {/* Team Members Grid (5 Dedicated Members) */}
         <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {team.map((member) => {
-            const isEditing = editingId === member.id;
+          {teamMembers.map((member) => {
             const isFaculty = member.role.includes("FACULTY GUIDE");
             const RoleIcon = getRoleIcon(member.role);
-
-            if (isEditing && editForm) {
-              return (
-                <div
-                  key={member.id}
-                  className="p-6 rounded-[5px] bg-white border-2 border-red-600 space-y-3.5 shadow-md"
-                >
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-mono text-red-700 font-bold uppercase block">
-                      Editing {member.role}
-                    </span>
-                    <RoleIcon className="w-4 h-4 text-red-600" />
-                  </div>
-
-                  <div>
-                    <label className="text-[11px] font-mono text-neutral-600 block mb-1">Full Name</label>
-                    <input
-                      type="text"
-                      value={editForm.name}
-                      onChange={e => setEditForm({ ...editForm, name: e.target.value })}
-                      className="w-full px-3 py-1.5 rounded-[5px] bg-white border border-neutral-300 text-xs text-neutral-900 shadow-xs"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="text-[11px] font-mono text-neutral-600 block mb-1">Department</label>
-                    <input
-                      type="text"
-                      value={editForm.department}
-                      onChange={e => setEditForm({ ...editForm, department: e.target.value })}
-                      className="w-full px-3 py-1.5 rounded-[5px] bg-white border border-neutral-300 text-xs text-neutral-900 shadow-xs"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="text-[11px] font-mono text-neutral-600 block mb-1">College / University</label>
-                    <input
-                      type="text"
-                      value={editForm.college}
-                      onChange={e => setEditForm({ ...editForm, college: e.target.value })}
-                      className="w-full px-3 py-1.5 rounded-[5px] bg-white border border-neutral-300 text-xs text-neutral-900 shadow-xs"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="text-[11px] font-mono text-neutral-600 block mb-1">Institutional Email</label>
-                    <input
-                      type="text"
-                      value={editForm.email}
-                      onChange={e => setEditForm({ ...editForm, email: e.target.value })}
-                      className="w-full px-3 py-1.5 rounded-[5px] bg-white border border-neutral-300 text-xs text-neutral-900 shadow-xs"
-                    />
-                  </div>
-
-                  <div className="flex justify-end gap-2 pt-2">
-                    <button
-                      onClick={handleCancel}
-                      className="px-3 py-1.5 rounded-[5px] text-xs font-mono text-neutral-600 hover:text-neutral-900"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      onClick={handleSave}
-                      className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-[5px] text-xs font-bold text-white bg-red-600 hover:bg-red-700 shadow-xs"
-                    >
-                      <Check className="w-3.5 h-3.5" />
-                      <span>Save</span>
-                    </button>
-                  </div>
-                </div>
-              );
-            }
 
             return (
               <div
                 key={member.id}
-                onClick={() => handleStartEdit(member)}
-                className={`p-6 sm:p-7 rounded-[5px] bg-white border transition-all flex flex-col justify-between group cursor-pointer relative overflow-hidden shadow-xs hover:shadow-md ${
+                className={`p-6 sm:p-7 bg-white dark:bg-neutral-950 border transition-all flex flex-col justify-between group relative overflow-hidden shadow-xs hover:border-red-600 ${
                   isFaculty 
-                    ? 'border-red-600/50 hover:border-red-600' 
-                    : 'border-neutral-200 hover:border-red-600'
+                    ? 'border-red-600/60 dark:border-red-600/70 md:col-span-2 lg:col-span-1' 
+                    : 'border-neutral-300 dark:border-neutral-800'
                 }`}
               >
                 <div>
+                  {/* Role Header Badge */}
                   <div className="flex items-center justify-between mb-4">
-                    <div className="inline-flex items-center gap-1.5 font-mono text-xs font-bold text-red-700 px-2.5 py-1 rounded-[5px] bg-red-100/70 border border-red-200">
-                      <RoleIcon className="w-3 h-3 text-red-600" />
+                    <div className="inline-flex items-center gap-1.5 font-mono text-xs font-bold text-red-700 dark:text-red-400 px-2.5 py-1 bg-red-50 dark:bg-red-950/60 border border-red-200 dark:border-red-900">
+                      <RoleIcon className="w-3.5 h-3.5 text-red-600" />
                       <span>{member.role}</span>
                     </div>
 
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleStartEdit(member);
-                      }}
-                      className="inline-flex items-center gap-1 px-2 py-1 rounded-[5px] bg-white border border-neutral-200 text-neutral-500 hover:text-neutral-900 font-mono text-[10px]"
-                      title="Edit this team member"
-                    >
-                      <Pencil className="w-2.5 h-2.5" />
-                      <span>EDIT</span>
-                    </button>
+                    {isFaculty && (
+                      <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-red-600 dark:text-red-400 px-2 py-0.5 border border-red-300 dark:border-red-800 bg-red-50/50 dark:bg-red-950/30">
+                        SUPERVISOR
+                      </span>
+                    )}
                   </div>
 
-                  <h3 className="text-lg font-bold text-neutral-950 mb-1 group-hover:text-red-600 transition-colors">
+                  {/* Member Name */}
+                  <h3 className="text-xl font-black text-neutral-950 dark:text-white uppercase tracking-tight group-hover:text-red-600 transition-colors">
                     {member.name}
                   </h3>
 
-                  <p className="text-xs text-neutral-700 leading-snug">
+                  {/* Department */}
+                  <p className="text-xs text-neutral-700 dark:text-neutral-300 leading-snug mt-2 font-medium">
                     {member.department}
                   </p>
 
-                  <p className="text-xs text-neutral-500 mt-1">
+                  {/* College */}
+                  <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-1">
                     {member.college}
                   </p>
                 </div>
 
-                <div className="mt-6 pt-4 border-t border-neutral-200 flex items-center justify-between text-xs font-mono text-neutral-600">
-                  <div className="flex items-center gap-1.5">
-                    <Mail className="w-3.5 h-3.5 text-red-600" />
-                    <span className="truncate max-w-[200px]">{member.email}</span>
-                  </div>
-                  <span className="text-[10px] text-neutral-400 group-hover:text-neutral-700 flex items-center gap-0.5">
-                    <Pencil className="w-2.5 h-2.5" />
-                    <span>Edit</span>
-                  </span>
+                {/* Email Footer Link */}
+                <div className="mt-6 pt-4 border-t border-neutral-100 dark:border-neutral-800/80 flex items-center justify-between text-xs font-mono">
+                  <a
+                    href={`mailto:${member.email}`}
+                    className="flex items-center gap-2 text-neutral-600 dark:text-neutral-400 hover:text-red-600 dark:hover:text-red-400 transition-colors truncate max-w-full"
+                    title={`Email ${member.name}`}
+                  >
+                    <Mail className="w-3.5 h-3.5 text-red-600 shrink-0" />
+                    <span className="truncate">{member.email}</span>
+                  </a>
                 </div>
               </div>
             );
@@ -230,5 +127,3 @@ export const Team: React.FC = () => {
     </section>
   );
 };
-
-

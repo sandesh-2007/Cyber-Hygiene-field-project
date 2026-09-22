@@ -536,54 +536,46 @@ export const INITIAL_REFERENCES: ReferenceItem[] = [
   }
 ];
 
-// Editable Team Placeholders
+// Project Team Members
 export const INITIAL_TEAM: TeamMember[] = [
   {
     id: "TM01",
     role: "PROJECT LEAD",
-    name: "[Project Lead Name]",
-    department: "Department of Computer Science & Information Technology",
-    college: "[College / University Name]",
-    email: "projectlead@college.edu"
+    name: "Yash Tiwari",
+    department: "Department of Information Technology",
+    college: "Thakur Shyamnarayan Degree College",
+    email: "yashtiwari9320@gmail.com"
   },
   {
     id: "TM02",
     role: "RESEARCH & DOCUMENTATION",
-    name: "[Researcher Name]",
-    department: "Department of Computer Applications",
-    college: "[College / University Name]",
-    email: "research@college.edu"
-  },
-  {
-    id: "TM03",
-    role: "SURVEY & DATA ANALYSIS",
-    name: "[Data Analyst Name]",
-    department: "Department of Information Security",
-    college: "[College / University Name]",
-    email: "data.analysis@college.edu"
+    name: "Nigel Bijamo",
+    department: "Department of Information Technology",
+    college: "Thakur Shyamnarayan Degree College",
+    email: "nigelhumtsoe@gmail.com"
   },
   {
     id: "TM04",
     role: "WEB DEVELOPMENT",
-    name: "[Developer Name]",
-    department: "Department of Software Engineering",
-    college: "[College / University Name]",
-    email: "webdev@college.edu"
+    name: "Sandesh Vishwakarma",
+    department: "Department of Information Technology",
+    college: "Thakur Shyamnarayan Degree College",
+    email: "sandesh.vishwakarma2007@gmail.com"
   },
   {
     id: "TM05",
     role: "FIELD WORK",
-    name: "[Field Work Lead Name]",
-    department: "Student Research Committee",
-    college: "[College / University Name]",
-    email: "fieldwork@college.edu"
+    name: "Abhijeet Dubey",
+    department: "Department of Information Technology",
+    college: "Thakur Shyamnarayan Degree College",
+    email: "dubeyabhijeet62@gmail.com"
   },
   {
     id: "TM06",
     role: "FACULTY GUIDE",
-    name: "[Professor / Guide Name]",
-    department: "Faculty of Computer Studies & Cyber Systems",
-    college: "[College / University Name]",
+    name: "Prof. Upasana Mishra",
+    department: "Faculty of Information Technology",
+    college: "Thakur Shyamnarayan Degree College",
     email: "faculty.guide@college.edu"
   }
 ];
